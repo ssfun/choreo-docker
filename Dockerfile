@@ -1,11 +1,9 @@
 FROM ghcr.io/open-webui/open-webui:main-slim
 
-WORKDIR /app/backend
+COPY --from=ghcr.io/komari-monitor/komari-agent:latest /app/komari-agent /app/komari-agent
+COPY COPY entrypoint.sh /app/entrypoint.sh
 
-COPY --from=ghcr.io/komari-monitor/komari-agent:latest /app/komari-agent /app/backend/komari-agent
-COPY COPY entrypoint.sh /app/backend/entrypoint.sh
-
-RUN chmod +x /app/backend/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 # --- 1. 核心路径配置 (指向 /tmp) ---
 ENV DATA_DIR=/tmp/data
@@ -28,4 +26,6 @@ USER 10014
 
 EXPOSE 8080
 
-CMD ["bash", "-c", "mkdir -p /tmp/data /tmp/static && cp -r /app/backend/open_webui/static/* /tmp/static/ && exec bash start.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+CMD ["bash", "start.sh"]
