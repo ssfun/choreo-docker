@@ -1,7 +1,7 @@
 FROM ghcr.io/open-webui/open-webui:main-slim
 
 COPY --from=ghcr.io/komari-monitor/komari-agent:latest /app/komari-agent /app/komari-agent
-COPY COPY entrypoint.sh /app/entrypoint.sh
+COPY entrypoint.sh /app/entrypoint.sh
 
 RUN chmod +x /app/entrypoint.sh
 
