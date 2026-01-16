@@ -1,6 +1,11 @@
 FROM ghcr.io/open-webui/open-webui:main-slim
 
-COPY --from=ghcr.io/komari-monitor/komari-agent:latest /app/komari-agent /app/komari-agent
+WORKDIR /app/backend
+
+COPY --from=ghcr.io/komari-monitor/komari-agent:latest /app/komari-agent /app/backend/komari-agent
+COPY COPY entrypoint.sh /app/backend/entrypoint.sh
+
+RUN chmod +x /app/backend/entrypoint.sh
 
 # --- 1. 核心路径配置 (指向 /tmp) ---
 ENV DATA_DIR=/tmp/data
