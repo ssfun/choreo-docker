@@ -170,3 +170,16 @@ jobs:
           git add README.md
           git commit -m "docs: update to ${{ steps.update_script.outputs.new_version }}"
           git push
+
+  cleanup-runs:
+    runs-on: ubuntu-latest
+    needs: check-and-update
+    if: always()
+    steps:
+      - name: Delete old workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 7
+          keep_minimum_runs: 6
